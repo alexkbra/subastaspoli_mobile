@@ -1,0 +1,44 @@
+{
+    "nombreApp" : "hometech",
+    "rutas" : [
+        {
+            "ruta" : "loginV2",
+            "icon" : "login",
+            "texto": "Iniciar sesión",
+            "permit": ["OTHER"]
+        },
+        {
+            "ruta" : "/",
+            "icon" : "novedad",
+            "texto": "Eventos",
+            "permit": ["OTHER","DELEAR","USER"]
+        },
+        {
+            "ruta" : "service_client",
+            "icon" : "business",
+            "texto": "Mensajes",
+            "permit": ["USER"]
+        },
+        {
+            "ruta" : "/",
+            "icon" : "cerrar_session",
+            "texto": "Cerrar sesión",
+            "permit": ["USER"],
+            "cerrar" : true
+        }
+
+    ],
+    "navegacion" : [
+        {
+            "ruta" : "puja_page",
+            "icon" : "puja",
+            "texto": "Pujar",
+            "pujar": true
+        },
+        {
+            "ruta" : "business",
+            "icon" : "business",
+            "texto": "Mensajes"
+        }
+    ]
+}
