@@ -36,7 +36,7 @@ class _CardLotesState extends State<CardLotes> {
 
       geleria.add(_util.imageFromBase64String(widget.lote.imagenUrl));
       if (widget.lote.videoUrl != null && widget.lote.videoUrl.isNotEmpty) {
-        geleria.add(_util.videoEvento(widget.lote.videoUrl, context));
+        //geleria.add(_util.videoEvento(widget.lote.videoUrl, context));
       }
     }
 
@@ -150,7 +150,7 @@ class _CardLotesState extends State<CardLotes> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                ...geleria.map((s) {
+                /*...geleria.map((s) {
                   return Container(
                     margin: EdgeInsets.only(right: 4.0),
                     height: geleria.length <= 1 ? 0.0 : 6.0,
@@ -162,7 +162,7 @@ class _CardLotesState extends State<CardLotes> {
                       shape: BoxShape.circle,
                     ),
                   );
-                }),
+                }),*/
               ],
             ),
           ),
@@ -202,7 +202,7 @@ class _CardLotesState extends State<CardLotes> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              ..._processCaption(
+              _processCaption(
                 caption,
                 '#',
                 TextStyle(color: Colors.blue),
@@ -235,14 +235,14 @@ class _CardLotesState extends State<CardLotes> {
         ),
       );
 
-  List<TextSpan> _processCaption(
+  TextSpan _processCaption(
       String caption, String matcher, TextStyle style) {
-    List<TextSpan> spans = [];
+    //List<TextSpan> spans = [];
 
     //spans.add(TextSpan(text: 'prueba link...' + ' ', style: style));
-    spans.add(TextSpan(text: widget.lote.decripcion + ' '));
+    //spans.add();
 
-    return spans;
+    return TextSpan(text: widget.lote.decripcion + ' ');
   }
 
   List<Widget> sliderIndicator(int totalItem, int currentItem) {

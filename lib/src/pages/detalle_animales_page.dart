@@ -174,12 +174,13 @@ class _DetalleAnimalesPageState extends State<DetalleAnimalesPage> {
           Hero(
             tag: lotesToAnimales.animales.id,
             child: ClipRRect(
-                child: ((lotesToAnimales.animales.videoUrl == null
+                child: /*((lotesToAnimales.animales.videoUrl == null
                         ? true
                         : lotesToAnimales.animales.videoUrl.isEmpty)
-                    ? Container()
-                    : _util.videoEvento(
-                        lotesToAnimales.animales.videoUrl, context))),
+                    ? */
+                    Container()
+                    /*: _util.videoEvento(
+                        lotesToAnimales.animales.videoUrl, context))*/),
           ),
         ],
       ),

@@ -39,7 +39,7 @@ class _CardEventoState extends State<CardEvento> {
     if (geleria.isEmpty) {
       geleria.add(_util.imageFromBase64String(widget.evento.imagenUrl));
       if (widget.evento.videoUrl != null && widget.evento.videoUrl.isNotEmpty) {
-        geleria.add(_util.videoEvento(widget.evento.videoUrl, context));
+        //geleria.add(_util.videoEvento(widget.evento.videoUrl, context));
       }
     }
 
@@ -132,7 +132,7 @@ class _CardEventoState extends State<CardEvento> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                ...geleria.map((s) {
+                /*...geleria.map((s) {
                   return Container(
                     margin: EdgeInsets.only(right: 4.0),
                     height: geleria.length <= 1 ? 0.0 : 6.0,
@@ -144,7 +144,7 @@ class _CardEventoState extends State<CardEvento> {
                       shape: BoxShape.circle,
                     ),
                   );
-                }),
+                }),*/
               ],
             ),
           ),
@@ -184,7 +184,7 @@ class _CardEventoState extends State<CardEvento> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              ..._processCaption(
+              _processCaption(
                 caption,
                 '#',
                 TextStyle(color: Colors.blue),
@@ -217,14 +217,14 @@ class _CardEventoState extends State<CardEvento> {
         ),
       );
 
-  List<TextSpan> _processCaption(
+  TextSpan _processCaption(
       String caption, String matcher, TextStyle style) {
-    List<TextSpan> spans = [];
+    //List<TextSpan> spans = [];
 
     //spans.add(TextSpan(text: 'prueba link...' + ' ', style: style));
-    spans.add(TextSpan(text: widget.evento.decripcion ));
+    //spans.add();
 
-    return spans;
+    return TextSpan(text: widget.evento.decripcion );
   }
 
   List<Widget> sliderIndicator(int totalItem, int currentItem) {

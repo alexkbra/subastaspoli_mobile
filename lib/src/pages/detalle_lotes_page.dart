@@ -172,9 +172,10 @@ class _DetalleLotesPageState extends State<DetalleLotesPage> {
           Hero(
             tag: lote.id,
             child: ClipRRect(
-                child: ((lote.videoUrl == null ? true : lote.videoUrl.isEmpty)
-                    ? Container()
-                    : _util.videoEvento(lote.videoUrl, context))),
+                child: (/*(lote.videoUrl == null ? true : lote.videoUrl.isEmpty)
+                    ? */
+                    Container()
+                    /*: _util.videoEvento(lote.videoUrl, context)*/)),
           ),
         ],
       ),

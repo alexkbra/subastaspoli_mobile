@@ -28,7 +28,7 @@ class Session {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setInt(key, id);
   }
- 
+
   getEntidad({String key}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return await prefs.get(key);

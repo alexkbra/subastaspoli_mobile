@@ -37,7 +37,7 @@ class _CardSubastasState extends State<CardSubastas> {
       geleria.add(_util.imageFromBase64String(widget.subasta.imagenUrl));
       if (widget.subasta.videoUrl != null &&
           widget.subasta.videoUrl.isNotEmpty) {
-        geleria.add(_util.videoEvento(widget.subasta.videoUrl, context));
+        //geleria.add(_util.videoEvento(widget.subasta.videoUrl, context));
       }
     }
 
@@ -151,7 +151,7 @@ class _CardSubastasState extends State<CardSubastas> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                ...geleria.map((s) {
+                /*...geleria.map((s) {
                   return Container(
                     margin: EdgeInsets.only(right: 4.0),
                     height: geleria.length <= 1 ? 0.0 : 6.0,
@@ -163,7 +163,7 @@ class _CardSubastasState extends State<CardSubastas> {
                       shape: BoxShape.circle,
                     ),
                   );
-                }),
+                }),*/
               ],
             ),
           ),
@@ -203,7 +203,7 @@ class _CardSubastasState extends State<CardSubastas> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              ..._processCaption(
+              _processCaption(
                 caption,
                 '#',
                 TextStyle(color: Colors.blue),
@@ -236,14 +236,14 @@ class _CardSubastasState extends State<CardSubastas> {
         ),
       );
 
-  List<TextSpan> _processCaption(
+  TextSpan _processCaption(
       String caption, String matcher, TextStyle style) {
-    List<TextSpan> spans = [];
+    //List<TextSpan> spans = [];
 
     //spans.add(TextSpan(text: 'prueba link...' + ' ', style: style));
-    spans.add(TextSpan(text: widget.subasta.decripcion + ' '));
+    //spans.add();
 
-    return spans;
+    return TextSpan(text: widget.subasta.decripcion + ' ');
   }
 
   List<Widget> sliderIndicator(int totalItem, int currentItem) {

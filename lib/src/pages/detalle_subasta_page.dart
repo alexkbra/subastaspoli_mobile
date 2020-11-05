@@ -168,9 +168,10 @@ class _DetalleSubastaPageState extends State<DetalleSubastaPage> {
             tag: evento.id,
             child: ClipRRect(
                 child:
-                    ((evento.videoUrl == null ? true : evento.videoUrl.isEmpty)
-                        ? Container()
-                        : _util.videoEvento(evento.videoUrl, context))),
+                    (/*(evento.videoUrl == null ? true : evento.videoUrl.isEmpty)
+                        ?*/ 
+                        Container()
+                        /*: _util.videoEvento(evento.videoUrl, context)*/)),
           ),
         ],
       ),

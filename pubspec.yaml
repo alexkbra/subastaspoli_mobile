@@ -27,9 +27,9 @@ dependencies:
   http: ^0.12.0+2
   rxdart: ^0.22.6
   flutter_secure_storage: ^3.3.1+1
-  youtube_player: ^3.5.0
+  #youtube_player_flutter: ^7.0.0+7
   shared_preferences: ^0.5.6+2
-  #adhara_socket_io: ^0.4.1
+  adhara_socket_io: ^0.4.1
   flutter_socket_io: ^0.6.0
   intl: ^0.16.1
   

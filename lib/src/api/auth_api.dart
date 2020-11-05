@@ -49,7 +49,7 @@ Future<bool> login(BuildContext context, LoginVM login) async {
         scheme: Utils.scheme,
         host: Utils.host,
         port: Utils.port,
-        path: '${Utils.path}/authenticate');
+        path: '${Utils.path}/authenticate_mobile');
         
       final json = jsonEncode(login.toJson());
       final map = {"Content-Type": "application/json"};

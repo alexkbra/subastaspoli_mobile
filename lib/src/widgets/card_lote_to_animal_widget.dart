@@ -37,7 +37,7 @@ class _CardLotesToAnimalState extends State<CardLotesToAnimal> {
 
       geleria.add(_util.imageFromBase64String(widget.loteToAnimal.animales.imagenUrl));
       if (widget.loteToAnimal.animales.videoUrl != null && widget.loteToAnimal.animales.videoUrl.isNotEmpty) {
-        geleria.add(_util.videoEvento(widget.loteToAnimal.animales.videoUrl, context));
+        //geleria.add(_util.videoEvento(widget.loteToAnimal.animales.videoUrl, context));
       }
     }
 
@@ -151,7 +151,7 @@ class _CardLotesToAnimalState extends State<CardLotesToAnimal> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                ...geleria.map((s) {
+                /*...geleria.map((s) {
                   return Container(
                     margin: EdgeInsets.only(right: 4.0),
                     height: geleria.length <= 1 ? 0.0 : 6.0,
@@ -163,7 +163,7 @@ class _CardLotesToAnimalState extends State<CardLotesToAnimal> {
                       shape: BoxShape.circle,
                     ),
                   );
-                }),
+                }),*/
               ],
             ),
           ),
@@ -203,7 +203,7 @@ class _CardLotesToAnimalState extends State<CardLotesToAnimal> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              ..._processCaption(
+              _processCaption(
                 caption,
                 '#',
                 TextStyle(color: Colors.blue),
@@ -235,14 +235,14 @@ class _CardLotesToAnimalState extends State<CardLotesToAnimal> {
         ),
       );
 
-  List<TextSpan> _processCaption(
+  TextSpan _processCaption(
       String caption, String matcher, TextStyle style) {
-    List<TextSpan> spans = [];
+    //List<TextSpan> spans = [];
 
     //spans.add(TextSpan(text: 'prueba link...' + ' ', style: style));
-    spans.add(TextSpan(text: widget.loteToAnimal.animales.descripcion + ' '));
+    //spans.add();
 
-    return spans;
+    return TextSpan(text: widget.loteToAnimal.animales.descripcion + ' ');
   }
 
   List<Widget> sliderIndicator(int totalItem, int currentItem) {

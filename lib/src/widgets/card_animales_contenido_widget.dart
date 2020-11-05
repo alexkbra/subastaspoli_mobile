@@ -33,7 +33,7 @@ class _CardAnimalesContenidoState extends State<CardAnimalesContenido> {
     if (geleria.isEmpty) {
       geleria.add(_util.imageFromBase64String(widget.contenido.imagenUrl));
       if (widget.contenido.url != null && widget.contenido.url.isNotEmpty) {
-        geleria.add(_util.videoEvento(widget.contenido.url, context));
+        //geleria.add(_util.videoEvento(widget.contenido.url, context));
       }
     }
     final card = Container(
@@ -144,7 +144,7 @@ class _CardAnimalesContenidoState extends State<CardAnimalesContenido> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                ...geleria.map((s) {
+                /*...geleria.map((s) {
                   return Container(
                     margin: EdgeInsets.only(right: 4.0),
                     height: geleria.length <= 1 ? 0.0 : 6.0,
@@ -156,7 +156,7 @@ class _CardAnimalesContenidoState extends State<CardAnimalesContenido> {
                       shape: BoxShape.circle,
                     ),
                   );
-                }),
+                }),*/
               ],
             ),
           ),
@@ -196,11 +196,11 @@ class _CardAnimalesContenidoState extends State<CardAnimalesContenido> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              ..._processCaption(
+              /*..._processCaption(
                 caption,
                 '#',
                 TextStyle(color: Colors.blue),
-              ),
+              ),*/
             ],
           ),
         ),
