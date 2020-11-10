@@ -166,7 +166,7 @@ class _DetalleEventoPageState extends State<DetalleEventoPage> {
                     (/*(evento.videoUrl == null ? true : evento.videoUrl.isEmpty)
                         ? */
                         Container()
-                        /*: _util.videoEvento(evento.videoUrl, context)*/)),
+                    /*: _util.videoEvento(evento.videoUrl, context)*/)),
           ),
         ],
       ),
@@ -175,10 +175,12 @@ class _DetalleEventoPageState extends State<DetalleEventoPage> {
 
   Widget _posterSubTitulo(BuildContext context, EventosModel evento) {
     return Container(
-      child: Center(
-        child: Text("Subastas", style: TextStyle(fontSize:  18.0),),
-      )
-    );
+        child: Center(
+      child: Text(
+        "Subastas",
+        style: TextStyle(fontSize: 18.0),
+      ),
+    ));
   }
 
   Widget _descripcion(EventosModel evento) {
@@ -193,7 +195,8 @@ class _DetalleEventoPageState extends State<DetalleEventoPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(evento.decripcion, textAlign: TextAlign.justify),
+            Text(evento.decripcion == null ? "" : evento.decripcion,
+                textAlign: TextAlign.justify),
             SizedBox(height: 10.0),
             Row(
               children: <Widget>[

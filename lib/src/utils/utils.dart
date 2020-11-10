@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 //import 'package:youtube_player/youtube_player.dart';
 
 class Utils {
-  static const String sockedHost = '192.168.39.126:8080/websocket';
+  static const String sockedHost = '192.168.0.17:8080/websocket';
   //static const String sockedHost = 'ws://10.144.166.3:55544/websocket';
   //static const String host = '0984e7c6be84.ngrok.io';
   //static const String host = '192.168.0.17';

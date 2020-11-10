@@ -11,6 +11,7 @@ class Session {
   set({TokenResponse response}) async {
     final data = {
       "idToken": response.idToken,
+      "clientStatus": response.clientStatus,
       "createAt": DateTime.now().toString()
     };
     await storage.write(key: keySession, value: jsonEncode(data));

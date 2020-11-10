@@ -4,7 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:subastaspoli_mobile/src/api/auth_api.dart';
+import 'package:subastaspoli_mobile/src/bloc/provider.dart';
 import 'package:subastaspoli_mobile/src/models/puja_model.dart';
+import 'package:subastaspoli_mobile/src/pages/detalle_lotes_page.dart';
+import 'package:subastaspoli_mobile/src/pages/home_page.dart';
+import 'package:subastaspoli_mobile/src/utils/dialogs.dart';
 import 'package:subastaspoli_mobile/src/utils/session.dart';
 import 'package:subastaspoli_mobile/src/utils/socket_client.dart';
 import 'package:subastaspoli_mobile/src/widgets/circle_login.dart';
@@ -35,7 +39,7 @@ class _PujaPageState extends State<PujaPage> {
   }
 
   @override
-  void dispose(){
+  void dispose() {
     super.dispose();
     _socketClient.destroySocket();
   }
@@ -45,22 +49,20 @@ class _PujaPageState extends State<PujaPage> {
     if (dataSession != null &&
         dataSession['idToken'] != null &&
         dataSession['idToken'].toString().isNotEmpty) {
-          await _socketClient.destroySocket();
-          await _socketClient.connectSocket01(token: dataSession['idToken']);
-          print("Listo");
-
-
-        }
+      /* await _socketClient.destroySocket();
+      await _socketClient.connectSocket01(token: dataSession['idToken']);*/
+      print("Listo");
+    }
   }
 
-  _submit() async {
+  _submit(BuildContext context) async {
     if (_isFetching) return;
     final isValidate = _formKey.currentState.validate();
     if (isValidate) {
       setState(() {
         _isFetching = true;
       });
-      setSendMessage();
+      setSendMessage(context);
       /*final isOk = await _authAPI.login(context, _pujaVM);
       setState(() {
         _isFetching = false;
@@ -72,24 +74,54 @@ class _PujaPageState extends State<PujaPage> {
     }
   }
 
-  setSendMessage() async {
+  setSendMessage(BuildContext context) async {
     final isEvento = await _session.getEntidad(key: "eventoid");
     final isSubasta = await _session.getEntidad(key: "subastaid");
     final isLote = await _session.getEntidad(key: "loteid");
     final token = await _session.get();
-    final data = {"idEvento":isEvento,"idSubasta": isSubasta, "idLote": isLote,"valor": _pujaVM.valor, "token": token["idToken"] };
-    _socketClient.sendChatMessage(jsonEncode(data));
+    switch (token["clientStatus"]) {
+      case "anonymousClientNotBidder":
+        {
+          Dialogs.alertError(context, message: "Debe de ingresar como pujador");
+        }
+        break;
+      case "CD001":
+        {
+          Dialogs.alertError(context,
+              message:
+                  "Su estado debe de ser autorizado para empezar en la puja  ");
+        }
+        break;
+      case "CD002":
+        {
+          final data = {
+            "idEvento": isEvento,
+            "idSubasta": isSubasta,
+            "idLote": isLote,
+            "valor": _pujaVM.valor,
+            "token": token["idToken"]
+          };
+          _socketClient.sendChatMessage(jsonEncode(data));
+          //channel.sink.add(jsonEncode(data));
+          Dialogs.alertError(context, message: "Puja realizada ");
+        }
+        break;
+    }
     _isFetching = false;
-    //channel.sink.add(jsonEncode(data));
   }
-
 
   setSendMessageInit() async {
     final isEvento = await _session.getEntidad(key: "eventoid");
     final isSubasta = await _session.getEntidad(key: "subastaid");
     final isLote = await _session.getEntidad(key: "loteid");
     final token = await _session.get();
-    final data = {"idEvento":isEvento,"idSubasta": isSubasta, "idLote": isLote,"valor": null, "token": token["idToken"] };
+    final data = {
+      "idEvento": isEvento,
+      "idSubasta": isSubasta,
+      "idLote": isLote,
+      "valor": null,
+      "token": token["idToken"]
+    };
     _socketClient.sendChatMessage(jsonEncode(data));
     _isFetching = false;
     //channel.sink.add(jsonEncode(data));
@@ -216,9 +248,34 @@ class _PujaPageState extends State<PujaPage> {
                                   padding: EdgeInsets.symmetric(vertical: 17),
                                   color: Colors.blueGrey,
                                   borderRadius: BorderRadius.circular(4),
-                                  onPressed: () => _submit(),
+                                  onPressed: () => _submit(context),
                                   child: Text(
                                     "Ingresar",
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  maxWidth: 300,
+                                  minWidth: 300,
+                                ),
+                                child: CupertinoButton(
+                                  padding: EdgeInsets.symmetric(vertical: 17),
+                                  color: Colors.blueGrey,
+                                  borderRadius: BorderRadius.circular(4),
+                                  onPressed: () {
+                                    final bloc = Provider.ofLoginBloc(context);
+                                    bloc.changeEmail(null);
+                                    _session.deleteAll();
+                                    Navigator.pushNamed(
+                                        context, HomePage.pageName);
+                                  },
+                                  child: Text(
+                                    "Cerrar sesión",
                                     style: TextStyle(fontSize: 20),
                                   ),
                                 ),
@@ -231,6 +288,24 @@ class _PujaPageState extends State<PujaPage> {
                         ],
                       ),
                     )),
+              ),
+              Positioned(
+                left: 10,
+                top: 15,
+                child: SafeArea(
+                  child: CupertinoButton(
+                    padding: EdgeInsets.all(10),
+                    borderRadius: BorderRadius.circular(30),
+                    color: Colors.black12,
+                    onPressed: () {
+                      Navigator.pushNamed(context, HomePage.pageName);
+                    },
+                    child: Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
               ),
               _isFetching
                   ? Positioned.fill(

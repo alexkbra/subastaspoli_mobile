@@ -48,16 +48,18 @@ class _LoginV2PageState extends State<LoginV2Page> {
         final isSubasta = await _session.getEntidad(key: "subastaid");
         final isLote = await _session.getEntidad(key: "loteid");
         final whereIAmNow = await _session.getEntidad(key: "whereIAmNow");
-        setState(() {
-
-          _isFetching = false;
-        });
-        if (isEvento != null && isSubasta != null && isLote != null && whereIAmNow ==1) {
+        if (isEvento != null &&
+            isSubasta != null &&
+            isLote != null &&
+            whereIAmNow == 1) {
           Navigator.pushNamed(context, PujaPage.pageName);
         } else {
           Navigator.pushNamed(context, HomePage.pageName);
         }
       }
+      setState(() {
+        _isFetching = false;
+      });
     }
   }
 
@@ -66,8 +68,8 @@ class _LoginV2PageState extends State<LoginV2Page> {
     if (dataSession != null &&
         dataSession['idToken'] != null &&
         dataSession['idToken'].toString().isNotEmpty) {
-        LotesModel  _lote = ModalRoute.of(context).settings.arguments;
-       Navigator.pushNamed(context, DetalleLotesPage.pageName, arguments: _lote);
+      LotesModel _lote = ModalRoute.of(context).settings.arguments;
+      Navigator.pushNamed(context, DetalleLotesPage.pageName, arguments: _lote);
     }
   }
 
@@ -230,6 +232,22 @@ class _LoginV2PageState extends State<LoginV2Page> {
                       ],
                     ),
                   )),
+            ),
+            Positioned(
+              left: 10,
+              top: 15,
+              child: SafeArea(
+                child: CupertinoButton(
+                  padding: EdgeInsets.all(10),
+                  borderRadius: BorderRadius.circular(30),
+                  color: Colors.black12,
+                  onPressed: () => Navigator.pop(context),
+                  child: Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             ),
             _isFetching
                 ? Positioned.fill(

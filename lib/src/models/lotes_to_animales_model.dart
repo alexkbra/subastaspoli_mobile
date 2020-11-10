@@ -1,17 +1,14 @@
-
-
-class LotesToAnimalesModelList{
+class LotesToAnimalesModelList {
   List<LotesToAnimalesModel> items = new List();
   LotesToAnimalesModelList();
-  LotesToAnimalesModelList.fromJsonList(List<dynamic> jsonList){
-    if(jsonList == null) return;
-    for(var item in jsonList){
+  LotesToAnimalesModelList.fromJsonList(List<dynamic> jsonList) {
+    if (jsonList == null) return;
+    for (var item in jsonList) {
       final loteToAnimales = new LotesToAnimalesModel.fromJson(item);
       items.add(loteToAnimales);
     }
   }
 }
-
 
 class LotesToAnimalesModel {
   Animales _animales;
@@ -19,7 +16,8 @@ class LotesToAnimalesModel {
   int _id;
   Lotes _lotes;
 
-  LotesToAnimalesModel({Animales animales, double cantidad, int id, Lotes lotes}) {
+  LotesToAnimalesModel(
+      {Animales animales, double cantidad, int id, Lotes lotes}) {
     this._animales = animales;
     this._cantidad = cantidad;
     this._id = id;
@@ -424,7 +422,7 @@ class Propietario {
   String _imagenUrl;
   String _imagenUrlContentType;
   String _nombreORazonSocial;
-  int _numeroDocumento;
+  String _numeroDocumento;
   String _telefonocelular;
   String _telefonoempresarial;
   String _telefonofijo;
@@ -440,7 +438,7 @@ class Propietario {
       String imagenUrl,
       String imagenUrlContentType,
       String nombreORazonSocial,
-      int numeroDocumento,
+      String numeroDocumento,
       String telefonocelular,
       String telefonoempresarial,
       String telefonofijo,
@@ -483,8 +481,8 @@ class Propietario {
   String get nombreORazonSocial => _nombreORazonSocial;
   set nombreORazonSocial(String nombreORazonSocial) =>
       _nombreORazonSocial = nombreORazonSocial;
-  int get numeroDocumento => _numeroDocumento;
-  set numeroDocumento(int numeroDocumento) =>
+  String get numeroDocumento => _numeroDocumento;
+  set numeroDocumento(String numeroDocumento) =>
       _numeroDocumento = numeroDocumento;
   String get telefonocelular => _telefonocelular;
   set telefonocelular(String telefonocelular) =>
