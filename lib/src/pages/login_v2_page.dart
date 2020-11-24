@@ -9,6 +9,7 @@ import 'package:subastaspoli_mobile/src/pages/detalle_lotes_page.dart';
 import 'package:subastaspoli_mobile/src/pages/home_page.dart';
 import 'package:subastaspoli_mobile/src/pages/puja_page.dart';
 import 'package:subastaspoli_mobile/src/pages/sing_up_page.dart';
+import 'package:subastaspoli_mobile/src/utils/dialogs.dart';
 import 'package:subastaspoli_mobile/src/utils/session.dart';
 import 'package:subastaspoli_mobile/src/widgets/circle_login.dart';
 import 'package:subastaspoli_mobile/src/widgets/input_text_loginv2.dart';
@@ -52,7 +53,27 @@ class _LoginV2PageState extends State<LoginV2Page> {
             isSubasta != null &&
             isLote != null &&
             whereIAmNow == 1) {
-          Navigator.pushNamed(context, PujaPage.pageName);
+          final token = await _session.get();
+          switch (token["clientStatus"]) {
+            case "anonymousClientNotBidder":
+              {
+                Dialogs.alertError(context,
+                    message: "Debe de ingresar como pujador");
+              }
+              break;
+            case "CD001":
+              {
+                Dialogs.alertError(context,
+                    message:
+                        "Su estado debe de ser autorizado para empezar en la puja  ");
+              }
+              break;
+            case "CD002":
+              {
+                Navigator.pushNamed(context, PujaPage.pageName);
+              }
+              break;
+          }
         } else {
           Navigator.pushNamed(context, HomePage.pageName);
         }

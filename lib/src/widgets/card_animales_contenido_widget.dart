@@ -4,7 +4,6 @@ import 'package:subastaspoli_mobile/src/models/contenidos_model.dart';
 import 'package:subastaspoli_mobile/src/utils/utils.dart';
 
 class CardAnimalesContenido extends StatefulWidget {
-
   final ContenidosModel contenido;
 
   CardAnimalesContenido({this.contenido});
@@ -50,7 +49,7 @@ class _CardAnimalesContenidoState extends State<CardAnimalesContenido> {
           // For padding
           SizedBox(height: 8.0),
           // Different icon buttons and image slider indicator
-          actions(),
+          //actions(),
           // For padding
           SizedBox(height: 8.0),
           //Caption
@@ -62,7 +61,7 @@ class _CardAnimalesContenidoState extends State<CardAnimalesContenido> {
     );
 
     return Container(
-      margin: EdgeInsets.only(bottom: 30) ,
+      margin: EdgeInsets.only(bottom: 30),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30.0),
         boxShadow: <BoxShadow>[
@@ -233,7 +232,9 @@ class _CardAnimalesContenidoState extends State<CardAnimalesContenido> {
     List<TextSpan> spans = [];
 
     //spans.add(TextSpan(text: 'prueba link...' + ' ', style: style));
-    spans.add(TextSpan(text: (widget.contenido.texto != null ? widget.contenido.texto : '')  + ' '));
+    spans.add(TextSpan(
+        text: (widget.contenido.texto != null ? widget.contenido.texto : '') +
+            ' '));
 
     return spans;
   }

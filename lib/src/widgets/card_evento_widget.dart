@@ -54,7 +54,7 @@ class _CardEventoState extends State<CardEvento> {
         // For padding
         SizedBox(height: 8.0),
         // Different icon buttons and image slider indicator
-        actions(),
+        //actions(),
         // For padding
         SizedBox(height: 8.0),
         //Caption
@@ -217,14 +217,13 @@ class _CardEventoState extends State<CardEvento> {
         ),
       );
 
-  TextSpan _processCaption(
-      String caption, String matcher, TextStyle style) {
+  TextSpan _processCaption(String caption, String matcher, TextStyle style) {
     //List<TextSpan> spans = [];
 
     //spans.add(TextSpan(text: 'prueba link...' + ' ', style: style));
     //spans.add();
 
-    return TextSpan(text: widget.evento.decripcion );
+    return TextSpan(text: widget.evento.decripcion);
   }
 
   List<Widget> sliderIndicator(int totalItem, int currentItem) {

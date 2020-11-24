@@ -1,55 +1,32 @@
-import 'package:flutter_socket_io/flutter_socket_io.dart';
-import 'package:flutter_socket_io/socket_io_manager.dart';
+import 'dart:ffi';
+
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:subastaspoli_mobile/src/utils/utils.dart';
 
 class SocketClient {
-  SocketIO socketIO;
-  connectSocket01({String token}) {
-    //update your domain before using
-    socketIO = SocketIOManager().createSocketIO(
-        Utils.sockedHost, "/puja",
-        query: "access_token="+token, socketStatusCallback: socketStatus);
+  SocketClient._internal();
+  static SocketClient _instance = SocketClient._internal();
+  static SocketClient get instance => _instance;
 
-    //call init socket before doing anything                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-    
-    socketIO.init();
+  IO.Socket _socket;
 
-    //subscribe event
-    socketIO.subscribe("/topic/puja", _onSocketInfo);
+  void connect({String token}) {
+    this._socket = IO.io(Utils.sockedHost, <String, dynamic>{
+      'transports': ['websocket'],
+      'autoConnect': false,
+      //'extraHeaders': {'foo': 'bar'} // optional
+      /*'query': {
+        "token_id": "123"
+      }*/
+    });
+    this._socket.connect();
 
-    //connect socket
-    socketIO.connect();
+    this._socket.on('connection', (_) => {print('connect')});
+
+    this._socket.on('error', (_) => {print(_)});
   }
 
-  socketStatus() {
-    print("Socket status: " );
-  }
-
-  subscribes() {
-    if (socketIO != null) {
-      socketIO.subscribe("/topic/puja", onReceiveChatMessage);
-    }
-  }
-
-  void onReceiveChatMessage(dynamic message) {
-    print("Message from UFO: " + message);
-  }
-
-  void sendChatMessage(String msg) async {
-    if (socketIO != null) {
-      String jsonData = msg;
-          
-      socketIO.sendMessage("/topic/pujas", jsonData, onReceiveChatMessage);
-    }
-  }
-
-  destroySocket() {
-    if (socketIO != null) {
-      SocketIOManager().destroySocket(socketIO);
-    }
-  }
-
-  _onSocketInfo(dynamic message) {
-    print("Message from UFO: " + message);
+  void disconnect() {
+    this._socket?.disconnect();
   }
 }

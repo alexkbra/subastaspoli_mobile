@@ -1,16 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:subastaspoli_mobile/src/bloc/provider.dart';
+import 'package:subastaspoli_mobile/src/models/lotes_model.dart';
+import 'package:subastaspoli_mobile/src/pages/puja_page.dart';
+import 'package:subastaspoli_mobile/src/providers/push_notifications_provider.dart';
 import 'package:subastaspoli_mobile/src/routes/routes.dart';
 import 'package:subastaspoli_mobile/src/utils/menu_bottom_navigation_bar_util.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   // This widget is the root of your application.
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final pushProvider = PushNotificationProvider.instance;
+  final GlobalKey<NavigatorState> navigatorKey =
+      new GlobalKey<NavigatorState>();
+
+  @override
+  void initState() {
+    super.initState();
+    pushProvider.initNotifications(navigatorKey);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    pushProvider.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Provider(
       child: MaterialApp(
+        navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         title: 'Subastas',
         theme: ThemeData(

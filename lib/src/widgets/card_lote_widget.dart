@@ -6,7 +6,6 @@ import 'package:subastaspoli_mobile/src/utils/session.dart';
 import 'package:subastaspoli_mobile/src/utils/utils.dart';
 
 class CardLotes extends StatefulWidget {
-
   final LotesModel lote;
 
   CardLotes({this.lote});
@@ -33,7 +32,6 @@ class _CardLotesState extends State<CardLotes> {
   @override
   Widget build(BuildContext context) {
     if (geleria.isEmpty) {
-
       geleria.add(_util.imageFromBase64String(widget.lote.imagenUrl));
       if (widget.lote.videoUrl != null && widget.lote.videoUrl.isNotEmpty) {
         //geleria.add(_util.videoEvento(widget.lote.videoUrl, context));
@@ -54,7 +52,7 @@ class _CardLotesState extends State<CardLotes> {
           // For padding
           SizedBox(height: 8.0),
           // Different icon buttons and image slider indicator
-          actions(),
+          //actions(),
           // For padding
           SizedBox(height: 8.0),
           //Caption
@@ -68,7 +66,7 @@ class _CardLotesState extends State<CardLotes> {
     );
 
     return Container(
-      margin: EdgeInsets.only(bottom: 30) ,
+      margin: EdgeInsets.only(bottom: 30),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30.0),
         boxShadow: <BoxShadow>[
@@ -235,8 +233,7 @@ class _CardLotesState extends State<CardLotes> {
         ),
       );
 
-  TextSpan _processCaption(
-      String caption, String matcher, TextStyle style) {
+  TextSpan _processCaption(String caption, String matcher, TextStyle style) {
     //List<TextSpan> spans = [];
 
     //spans.add(TextSpan(text: 'prueba link...' + ' ', style: style));

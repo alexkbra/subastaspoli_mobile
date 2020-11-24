@@ -55,7 +55,7 @@ class _CardSubastasState extends State<CardSubastas> {
           // For padding
           SizedBox(height: 8.0),
           // Different icon buttons and image slider indicator
-          actions(),
+          //actions(),
           // For padding
           SizedBox(height: 8.0),
           //Caption
@@ -92,7 +92,7 @@ class _CardSubastasState extends State<CardSubastas> {
         children: <Widget>[
           SizedBox(width: 10),
           Text(
-            widget.subasta.nombre ,
+            widget.subasta.nombre,
             style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
@@ -236,8 +236,7 @@ class _CardSubastasState extends State<CardSubastas> {
         ),
       );
 
-  TextSpan _processCaption(
-      String caption, String matcher, TextStyle style) {
+  TextSpan _processCaption(String caption, String matcher, TextStyle style) {
     //List<TextSpan> spans = [];
 
     //spans.add(TextSpan(text: 'prueba link...' + ' ', style: style));

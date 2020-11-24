@@ -30,6 +30,11 @@ class Session {
     await prefs.setInt(key, id);
   }
 
+  putEntidadToken({String key, String data}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(key, data);
+  }
+
   getEntidad({String key}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return await prefs.get(key);

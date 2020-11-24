@@ -6,11 +6,10 @@ import 'package:flutter/services.dart';
 import 'package:subastaspoli_mobile/src/api/auth_api.dart';
 import 'package:subastaspoli_mobile/src/bloc/provider.dart';
 import 'package:subastaspoli_mobile/src/models/puja_model.dart';
-import 'package:subastaspoli_mobile/src/pages/detalle_lotes_page.dart';
 import 'package:subastaspoli_mobile/src/pages/home_page.dart';
+import 'package:subastaspoli_mobile/src/providers/push_notifications_provider.dart';
 import 'package:subastaspoli_mobile/src/utils/dialogs.dart';
 import 'package:subastaspoli_mobile/src/utils/session.dart';
-import 'package:subastaspoli_mobile/src/utils/socket_client.dart';
 import 'package:subastaspoli_mobile/src/widgets/circle_login.dart';
 import 'package:subastaspoli_mobile/src/widgets/input_text_loginv2.dart';
 
@@ -22,119 +21,102 @@ class PujaPage extends StatefulWidget {
 }
 
 class _PujaPageState extends State<PujaPage> {
+  final pushProvider = PushNotificationProvider.instance;
   final _formKey = GlobalKey<FormState>();
-  final _pujaVM = PujaVM();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
   final _authAPI = AuthApi();
   var _isFetching = false;
-  final _socketClient = new SocketClient();
   final Session _session = new Session();
-  var channel;
-  double _valorActual = 200.0;
+  String _valorActual = "0.0";
 
   @override
   void initState() {
     super.initState();
-    _connectWebSocket();
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+    _pujaInit();
+  }
+
+  _pujaInit() async {
+    if (_isFetching) return;
+
+    final isEvento = await _session.getEntidad(key: "eventoid");
+    final isSubasta = await _session.getEntidad(key: "subastaid");
+    final isLote = await _session.getEntidad(key: "loteid");
+    final tokenDis = await _session.getEntidad(key: "tokenDis");
+    final token = await _session.get();
+
+    setState(() {
+      _isFetching = true;
+    });
+
+    final pujaVM = PujaVM(
+        idEventos: isEvento.toString(),
+        idSubasta: isSubasta.toString(),
+        idLote: isLote.toString(),
+        token: token['idToken'].toString(),
+        dispositivoId: tokenDis,
+        valor: _valorActual);
+
+    final initPuja = await _authAPI.pujarInit(pujaVM);
+    setState(() {
+      _isFetching = false;
+    });
+    _valorActual = initPuja;
   }
 
   @override
   void dispose() {
     super.dispose();
-    _socketClient.destroySocket();
-  }
-
-  _connectWebSocket() async {
-    final dataSession = await _session.get();
-    if (dataSession != null &&
-        dataSession['idToken'] != null &&
-        dataSession['idToken'].toString().isNotEmpty) {
-      /* await _socketClient.destroySocket();
-      await _socketClient.connectSocket01(token: dataSession['idToken']);*/
-      print("Listo");
-    }
+    pushProvider.dispose();
   }
 
   _submit(BuildContext context) async {
     if (_isFetching) return;
+
+    final isEvento = await _session.getEntidad(key: "eventoid");
+    final isSubasta = await _session.getEntidad(key: "subastaid");
+    final isLote = await _session.getEntidad(key: "loteid");
+    final tokenDis = await _session.getEntidad(key: "tokenDis");
+    final token = await _session.get();
+
     final isValidate = _formKey.currentState.validate();
     if (isValidate) {
       setState(() {
         _isFetching = true;
       });
-      setSendMessage(context);
-      /*final isOk = await _authAPI.login(context, _pujaVM);
+
+      final pujaVM = PujaVM(
+          idEventos: isEvento.toString(),
+          idSubasta: isSubasta.toString(),
+          idLote: isLote.toString(),
+          token: token['idToken'].toString(),
+          dispositivoId: tokenDis,
+          valor: _valorActual);
+
+      final isOk = await _authAPI.pujar(context, pujaVM);
       setState(() {
         _isFetching = false;
       });
-      if(isOk ){
-        
-
-      }*/
+      if (isOk) {
+        Dialogs.alertInfo(context, message: "Puja realizada por $_valorActual");
+      } else {
+        Dialogs.alertError(context, message: "Error al realizar la puja");
+      }
     }
-  }
-
-  setSendMessage(BuildContext context) async {
-    final isEvento = await _session.getEntidad(key: "eventoid");
-    final isSubasta = await _session.getEntidad(key: "subastaid");
-    final isLote = await _session.getEntidad(key: "loteid");
-    final token = await _session.get();
-    switch (token["clientStatus"]) {
-      case "anonymousClientNotBidder":
-        {
-          Dialogs.alertError(context, message: "Debe de ingresar como pujador");
-        }
-        break;
-      case "CD001":
-        {
-          Dialogs.alertError(context,
-              message:
-                  "Su estado debe de ser autorizado para empezar en la puja  ");
-        }
-        break;
-      case "CD002":
-        {
-          final data = {
-            "idEvento": isEvento,
-            "idSubasta": isSubasta,
-            "idLote": isLote,
-            "valor": _pujaVM.valor,
-            "token": token["idToken"]
-          };
-          _socketClient.sendChatMessage(jsonEncode(data));
-          //channel.sink.add(jsonEncode(data));
-          Dialogs.alertError(context, message: "Puja realizada ");
-        }
-        break;
-    }
-    _isFetching = false;
-  }
-
-  setSendMessageInit() async {
-    final isEvento = await _session.getEntidad(key: "eventoid");
-    final isSubasta = await _session.getEntidad(key: "subastaid");
-    final isLote = await _session.getEntidad(key: "loteid");
-    final token = await _session.get();
-    final data = {
-      "idEvento": isEvento,
-      "idSubasta": isSubasta,
-      "idLote": isLote,
-      "valor": null,
-      "token": token["idToken"]
-    };
-    _socketClient.sendChatMessage(jsonEncode(data));
-    _isFetching = false;
-    //channel.sink.add(jsonEncode(data));
   }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    //setSendMessageInit();
-    //channel = IOWebSocketChannel.connect('wss://192.168.39.126:8080/websocket/puja');
-    //setSendMessage();
-    //_socketClient.subscribes();
+    final textTemp = ModalRoute.of(context).settings.arguments ??
+        Text(
+          "Puja Actual $_valorActual",
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
+        );
+
     return Scaffold(
+      key: scaffoldKey,
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
@@ -191,20 +173,16 @@ class _PujaPageState extends State<PujaPage> {
                               SizedBox(
                                 height: 30,
                               ),
-                              /*StreamBuilder(
-                                stream: channel.stream,
-                                builder: (context, snapshot) {
-                                  return Text(snapshot.hasData
-                                      ? '${snapshot.data}'
-                                      : '');
-                                },
-                              ),*/
-                              Text(
-                                "Puja Actual \n $_valorActual",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 25, fontWeight: FontWeight.w300),
-                              )
+                              StreamBuilder<Text>(
+                                  stream: pushProvider.mensajes,
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<Text> snapshot) {
+                                    if (snapshot.hasData) {
+                                      return snapshot.data;
+                                    } else {
+                                      return textTemp;
+                                    }
+                                  }),
                             ],
                           ),
                           Column(
@@ -225,7 +203,7 @@ class _PujaPageState extends State<PujaPage> {
                                           if (text.isEmpty) {
                                             return "Puja requerido";
                                           }
-                                          _pujaVM.valor = double.parse(text);
+                                          _valorActual = text;
                                           return null;
                                         },
                                       ),
@@ -250,7 +228,7 @@ class _PujaPageState extends State<PujaPage> {
                                   borderRadius: BorderRadius.circular(4),
                                   onPressed: () => _submit(context),
                                   child: Text(
-                                    "Ingresar",
+                                    "Pujar",
                                     style: TextStyle(fontSize: 20),
                                   ),
                                 ),
@@ -271,6 +249,7 @@ class _PujaPageState extends State<PujaPage> {
                                     final bloc = Provider.ofLoginBloc(context);
                                     bloc.changeEmail(null);
                                     _session.deleteAll();
+                                    pushProvider.dispose();
                                     Navigator.pushNamed(
                                         context, HomePage.pageName);
                                   },

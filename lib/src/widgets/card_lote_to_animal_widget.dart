@@ -6,7 +6,6 @@ import 'package:subastaspoli_mobile/src/utils/session.dart';
 import 'package:subastaspoli_mobile/src/utils/utils.dart';
 
 class CardLotesToAnimal extends StatefulWidget {
-
   final LotesToAnimalesModel loteToAnimal;
 
   CardLotesToAnimal({this.loteToAnimal});
@@ -34,9 +33,10 @@ class _CardLotesToAnimalState extends State<CardLotesToAnimal> {
   @override
   Widget build(BuildContext context) {
     if (geleria.isEmpty) {
-
-      geleria.add(_util.imageFromBase64String(widget.loteToAnimal.animales.imagenUrl));
-      if (widget.loteToAnimal.animales.videoUrl != null && widget.loteToAnimal.animales.videoUrl.isNotEmpty) {
+      geleria.add(
+          _util.imageFromBase64String(widget.loteToAnimal.animales.imagenUrl));
+      if (widget.loteToAnimal.animales.videoUrl != null &&
+          widget.loteToAnimal.animales.videoUrl.isNotEmpty) {
         //geleria.add(_util.videoEvento(widget.loteToAnimal.animales.videoUrl, context));
       }
     }
@@ -55,7 +55,7 @@ class _CardLotesToAnimalState extends State<CardLotesToAnimal> {
           // For padding
           SizedBox(height: 8.0),
           // Different icon buttons and image slider indicator
-          actions(),
+          //actions(),
           // For padding
           SizedBox(height: 8.0),
           //Caption
@@ -69,7 +69,7 @@ class _CardLotesToAnimalState extends State<CardLotesToAnimal> {
     );
 
     return Container(
-      margin: EdgeInsets.only(bottom: 30) ,
+      margin: EdgeInsets.only(bottom: 30),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30.0),
         boxShadow: <BoxShadow>[
@@ -235,8 +235,7 @@ class _CardLotesToAnimalState extends State<CardLotesToAnimal> {
         ),
       );
 
-  TextSpan _processCaption(
-      String caption, String matcher, TextStyle style) {
+  TextSpan _processCaption(String caption, String matcher, TextStyle style) {
     //List<TextSpan> spans = [];
 
     //spans.add(TextSpan(text: 'prueba link...' + ' ', style: style));
